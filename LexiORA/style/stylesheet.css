@@ -1,4 +1,152 @@
-h1 {
-    color: navy;
-    margin-left: 20px;
+/* CSS variables (Design System) */
+
+:root {
+    --primary-blue: #4A90E2;
+    --background-white: #FFFFFF;
+    --light-gray: #F7F7F7;
+    --dark-gray: #333333;
+    --turquoise: #4DB6AC;
 }
+
+/* Reset and base styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', Arial, sans-serif;
+    background-color: var(--background-white);
+    color: var(--dark-gray);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Typography */
+
+h1, h2, h3 {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+p {
+    font-size: 16px;
+}
+
+/* Layout containers */
+
+.container {
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Buttons */
+
+.btn-primary {
+    background-color: var(--turquoise);
+    color: white;
+    border: none;
+    padding: 16px 48px;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.btn-primary:hover {
+    background-color: #45a89e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Bottom navigation */
+
+
+/* Welcome screen */
+
+.mascot-container {
+    margin-bottom: 40px;
+}
+
+.mascot {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.title-container {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.app-title {
+    background: linear-gradient(135deg,
+    var(--turquoise), var(--primary-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 48px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--primary-blue);
+    font-size: 16px;
+    font-weight: 400;
+}
+
+/* Explorer screen */
+
+
+/* Camera screen */
+
+
+/* Result screen */
+
+
+/* Collection screen */
+
+
+/* Settings screen */
+
+
+/* Success banner */
+
+
+/* Utility */
+
+
