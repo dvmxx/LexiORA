@@ -85,6 +85,43 @@ p {
 
 /* Bottom navigation */
 
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 430px;
+    margin: 0 auto;
+    z-index: 100;
+}
+
+.nav-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+.nav-icon:hover {
+    background-color: var(--light-gray);
+    transform: scale(1.1);
+}
+
+.nav-icon.active {
+    background-color: var(--turquoise);
+    transform: scale(1.2);
+}
 
 /* Welcome screen */
 
@@ -97,6 +134,26 @@ p {
     height: 200px;
     object-fit: contain;
     animation: float 3s ease-in-out infinite;
+}
+
+.mascot-placeholder {
+    background: linear-gradient(135deg, #4DB6AC,
+    #4A90E2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 80px;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 @keyframes float {
