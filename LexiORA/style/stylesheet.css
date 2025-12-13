@@ -188,6 +188,55 @@ p {
 
 /* Explorer screen */
 
+.page-title {
+    text-align: center;
+    color: var(--turquoise);
+    margin-bottom: 40px;
+    margin-top: 20px;
+}
+
+.permission-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    margin-bottom: 100px;
+}
+
+.speech-bubble {
+    background-color: white;
+    border: 2px solid var(--light-gray);
+    border-radius: 20px;
+    padding: 20px 30px;
+    margin-bottom: 30px;
+    position: relative;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 280px;
+}
+
+/* Speech bubble arrow */
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid white;
+}
+
+.mascot-small {
+    width: 150px;
+    height: 150px;
+    font-size: 60px;
+}
 
 /* Camera screen */
 

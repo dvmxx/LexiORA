@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,
+   initial-scale=1.0">
     <title>Explorer Mode - Lexi ORA</title>
     <link rel="stylesheet"
           href="../style/stylesheet.css">
@@ -12,10 +12,27 @@
 <div class="container">
     <h2 class="page-title">Explorer Mode</h2>
 
-    <p style="text-align: center; color:
-  var(--dark-gray);">
-        Camera permission screen will go here
-    </p>
+    <!-- permission req -->
+    <div class="permission-container">
+        <!-- speech bubble -->
+        <div class="speech-bubble">
+            Please give access to the camera
+        </div>
+
+        <!-- lexi with camera -->
+        <div class="mascot-container">
+            <div class="mascot mascot-small
+  mascot-placeholder">
+                CAM
+            </div>
+        </div>
+    </div>
+
+    <!-- permission button -->
+    <button class="btn-primary"
+            id="requestCameraBtn">
+        Allow Camera Access
+    </button>
 </div>
 
 <!-- bottom nav -->
@@ -35,5 +52,6 @@
 </nav>
 
 <script src="../business/main.js"></script>
+<script src="../business/camera.js"></script>
 </body>
 </html>
