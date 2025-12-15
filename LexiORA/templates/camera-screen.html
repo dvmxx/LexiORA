@@ -2,9 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera - Lexi ORA</title>
+    <link rel="stylesheet" href="../style/stylesheet.css">
 </head>
 <body>
+<!-- camera container -->
+<div class="camera-container">
+    <!-- camera feed -->
+    <video id="cameraFeed" class="camera-view" autoplay playsinline></video>
 
+    <!-- ar overlay frame -->
+    <div class="camera-overlay"></div>
+
+    <!-- hint text -->
+    <div class="camera-hint">
+        Center the object in the frame
+    </div>
+
+    <!-- capture button -->
+    <div class="camera-controls">
+        <button class="capture-btn" id="captureBtn"></button>
+    </div>
+</div>
+
+<!-- bottom nav -->
+<nav class="bottom-nav">
+    <div class="nav-icon" data-page="setting-screen.html">
+        ⚙️
+    </div>
+    <div class="nav-icon active" data-page="camera-screen.html">
+        📷
+    </div>
+    <div class="nav-icon" data-page="collection-screen.html">
+        📚
+    </div>
+</nav>
+
+<script src="../business/main.js"></script>
+<script src="../business/camera.js"></script>
 </body>
 </html>
