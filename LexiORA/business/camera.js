@@ -80,7 +80,7 @@ function captureImage() {
     console.log('Image captured:', imageData.substring(0, 50) + '...');
 
     //for testing - sessionStorage
-    sessionStorage.setItem('captureImage', imageData);
+    sessionStorage.setItem('capturedImage', imageData);
     sessionStorage.setItem('detectedObject', 'cup'); //will be from COCO-SSD in the future
 
     // for now - show success message
