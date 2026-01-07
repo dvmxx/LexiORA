@@ -11,6 +11,7 @@ You should see:
 Serving files on https://0.0.0.0:8000
 NOTE: You will need to accept a security warning in your phone's browser.
 Press Ctrl+C to stop the server.
+IMPORTANT: Use https://URL
 
 Finding Your IP Address
 
