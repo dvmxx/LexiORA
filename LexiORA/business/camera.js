@@ -1,7 +1,19 @@
-// camera permission and functionality
+// camera permission and functionality with AI object detection
 
-const SERVER_URL = 'https://172.20.10.2:8000/detect'; // HIER IHRE IP ANPASSEN!
-const DETECTION_INTERVAL = 1000; // Sende alle 1 Sekunde einen Frame
+let model = null; // COCO-SSD model
+let detectionInterval = null;
+let currentDetections = [];
+
+// fix mobile viewport height
+function setMobileViewportHeight() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// update on resize and orientation change
+window.addEventListener('resize', setMobileViewportHeight);
+window.addEventListener('orientationchange', setMobileViewportHeight);
+setMobileViewportHeight(); // set initial value
 
 document.addEventListener('DOMContentLoaded', function() {
     // explorer screen - permission request
@@ -54,14 +66,13 @@ async function startCamera() {
         const videoElement = document.getElementById('cameraFeed');
         videoElement.srcObject = stream;
 
-        videoElement.onloadedmetadata = () => {
-            videoElement.play();
-            document.getElementById('status').textContent = "Kamera aktiv. Starte Live-Erkennung...";
-            // Sobald das Video geladen ist, starten wir die Erkennungsschleife
-            setTimeout(detectionLoop, 1000);
-        };
-
         console.log('Camera started successfully');
+
+        // wait for video to load, then start AI detection
+        videoElement.onloadedmetadata = async () => {
+            await loadAIModel();
+            startDetection();
+        };
 
     } catch (error) {
         console.error('Error starting camera:', error);
@@ -71,118 +82,138 @@ async function startCamera() {
     }
 }
 
-function detectionLoop() {
-    captureAndSendFrame()
-        .then(() => {
-            // Nach erfolgreicher Verarbeitung (oder Fehler) die Schleife neu starten
-            setTimeout(detectionLoop, DETECTION_INTERVAL);
-        })
-        .catch(error => {
-            // Logik bei Fehler, Schleife wird trotzdem fortgesetzt
-            console.error("Fehler in der Erkennungsschleife:", error);
-            setTimeout(detectionLoop, DETECTION_INTERVAL);
-        });
-}
+// load COCO-SSD model
+async function loadAIModel() {
+    const hint = document.getElementById('cameraHint');
+    hint.textContent = 'Loading AI model...';
 
-async function captureAndSendFrame() {
-    const video = document.getElementById('cameraFeed');
-    const canvas = document.getElementById('frameCanvas');
-    const context = canvas.getContext('2d');
-    const statusElement = document.getElementById('status');
-    const overlayElement = document.getElementById('detectionOverlay');
-
-    if (video.readyState < 2) { // 2 = HAVE_CURRENT_DATA
-        statusElement.textContent = "Warte auf Video-Daten...";
-        return Promise.reject("Video not ready");
+    try {
+        console.log('Loading COCO-SSD model...');
+        model = await cocoSsd.load();
+        console.log('COCO-SSD model loaded successfully');
+        hint.textContent = 'Point at an object';
+    } catch (error) {
+        console.error('Error loading AI model:', error);
+        hint.textContent = 'AI model failed to load';
     }
-
-    // Canvas für Frame-Erfassung vorbereiten
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    statusElement.textContent = "Sende Frame an Server...";
-    overlayElement.textContent = ""; // Overlay temporär leeren
-
-    return new Promise((resolve, reject) => {
-        // Konvertiere das Canvas-Bild in einen Blob (JPEG)
-        canvas.toBlob(async (blob) => {
-            if (!blob) return reject("Blob-Konvertierungsfehler");
-
-            const formData = new FormData();
-            formData.append('image', blob, 'frame.jpg');
-
-            try {
-                const response = await fetch(SERVER_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP Fehler! Status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                processServerResults(result);
-                resolve();
-
-            } catch (error) {
-                statusElement.textContent = `Netzwerkfehler: ${error.message}`;
-                reject(error);
-            }
-        }, 'image/jpeg', 0.7); // 0.7 ist die JPEG-Qualität
-    });
 }
 
-function processServerResults(result) {
-    const statusElement = document.getElementById('status');
-    const overlayElement = document.getElementById('detectionOverlay');
-    const videoElement = document.getElementById('cameraFeed');
+// start continuous object detection
+function startDetection() {
+    if (!model) return;
 
-    if (videoElement.readyState < 2) {
-        statusElement.textContent = "Warte auf Video-Daten für Skalierung...";
+    const video = document.getElementById('cameraFeed');
+
+    // run detection every 500ms
+    detectionInterval = setInterval(async () => {
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+            await detectObjects(video);
+        }
+    }, 500);
+}
+
+// detect objects in video frame
+async function detectObjects(video) {
+    try {
+        const predictions = await model.detect(video);
+        currentDetections = predictions;
+        displayDetections(predictions);
+    } catch (error) {
+        console.error('Detection error:', error);
+    }
+}
+
+// display detection labels on screen
+function displayDetections(predictions) {
+    const labelsContainer = document.getElementById('detectionLabels');
+    labelsContainer.innerHTML = ''; // clear previous labels
+
+    if (predictions.length === 0) {
+        document.getElementById('cameraHint').textContent = 'Point at an object';
         return;
     }
 
-    if (result.status === 'success' && result.detections && result.detections.length > 0) {
-        // Wir nehmen das erste erkannte Objekt
-        const detection = result.detections[0];
-        const [x1, y1, x2, y2] = detection.box; // Pixelkoordinaten vom Server
+    // find object closest to center (inside AR frame)
+    const centerObject = findCenterObject(predictions);
 
-        statusElement.textContent = `Erkannt: ${detection.label} (${(detection.score * 100).toFixed(1)}%)`;
+    predictions.forEach((prediction, index) => {
+        const isPrimary = prediction === centerObject;
 
-        // 1. Hole die tatsächliche Größe des Video-Elements auf dem Bildschirm
-        const videoRect = videoElement.getBoundingClientRect();
+        // only show label if confidence > 60%
+        if (prediction.score < 0.6) return;
 
-        // 2. Hole die Original-Auflösung des Videos, wie es an den Server gesendet wurde (ca. 1280x720)
-        const videoWidth = videoElement.videoWidth;
-        const videoHeight = videoElement.videoHeight;
+        const label = createDetectionLabel(prediction, isPrimary);
+        labelsContainer.appendChild(label);
+    });
 
-        // 3. Skaliere die vom Server gelieferten Pixelkoordinaten (z.B. 1280x720)
-        // auf die Anzeigegröße des Browsers (z.B. 375x667).
-
-        // Berechne die prozentuale Position des Mittelpunkts des Objekts
-        const centerX = (x1 + x2) / 2;
-        const centerY = (y1 + y2) / 2;
-
-        // Skalierung: Original-Pixel / Original-Breite * Display-Breite
-        const displayX = (centerX / videoWidth) * videoRect.width;
-        const displayY = (centerY / videoHeight) * videoRect.height;
-
-        // --- POSITIONIERUNG ---
-        overlayElement.textContent = `${detection.label}`;
-        overlayElement.style.display = 'block';
-
-        // Setze die absolute Position relativ zum .camera-container
-        // Die Positionierung muss den Transform-Ursprung (.detection-overlay) berücksichtigen.
-        overlayElement.style.left = `${displayX}px`;
-        overlayElement.style.top = `${displayY}px`;
-
-    } else {
-        statusElement.textContent = "Keine relevanten Objekte erkannt.";
-        overlayElement.textContent = "";
-        overlayElement.style.display = 'none';
+    // update hint with center object
+    if (centerObject) {
+        document.getElementById('cameraHint').textContent =
+            `${centerObject.class} (${Math.round(centerObject.score * 100)}%)`;
     }
+}
+
+// find object closest to center of AR frame
+function findCenterObject(predictions) {
+    const video = document.getElementById('cameraFeed');
+    const centerX = video.offsetWidth / 2;
+    const centerY = video.offsetHeight / 2;
+
+    let closestObject = null;
+    let minDistance = Infinity;
+
+    predictions.forEach(pred => {
+        const [x, y, width, height] = pred.bbox;
+        const objectCenterX = x + width / 2;
+        const objectCenterY = y + height / 2;
+
+        const distance = Math.sqrt(
+            Math.pow(objectCenterX - centerX, 2) +
+            Math.pow(objectCenterY - centerY, 2)
+        );
+
+        if (distance < minDistance && pred.score > 0.6) {
+            minDistance = distance;
+            closestObject = pred;
+        }
+    });
+
+    return closestObject;
+}
+
+// create label element for detection
+function createDetectionLabel(prediction, isPrimary) {
+    const label = document.createElement('div');
+    label.className = isPrimary ? 'detection-label primary' : 'detection-label';
+
+    const [x, y, width, height] = prediction.bbox;
+    const video = document.getElementById('cameraFeed');
+
+    // calculate position (center top of bounding box)
+    let labelX = x + width / 2;
+    let labelY = y;
+
+    // keep label within screen bounds
+    const labelWidth = 150; // approximate label width
+    const labelHeight = 40; // approximate label height
+
+    // constrain X position
+    if (labelX < labelWidth / 2) labelX = labelWidth / 2;
+    if (labelX > video.offsetWidth - labelWidth / 2) {
+        labelX = video.offsetWidth - labelWidth / 2;
+    }
+
+    // constrain Y position
+    if (labelY < labelHeight) labelY = labelHeight;
+
+    // position label
+    label.style.left = labelX + 'px';
+    label.style.top = labelY + 'px';
+
+    // show class name and confidence
+    label.textContent = `${prediction.class} ${Math.round(prediction.score * 100)}%`;
+
+    return label;
 }
 
 // capture image from camera
@@ -200,16 +231,25 @@ function captureImage() {
     // convert to image data
     const imageData = canvas.toDataURL('image/jpeg');
 
-    // TODO: send to COCO-SSD for object detection
-    console.log('Image captured:', imageData.substring(0, 50) + '...');
+    // get center object (most likely what user wants)
+    const centerObject = findCenterObject(currentDetections);
 
-    //for testing - sessionStorage
+    if (!centerObject) {
+        alert('No object detected. Please point at an object and try again.');
+        return;
+    }
+
+    console.log('Captured object:', centerObject.class, 'confidence:', centerObject.score);
+
+    // store in sessionStorage
     sessionStorage.setItem('capturedImage', imageData);
-    sessionStorage.setItem('detectedObject', 'cup'); //will be from COCO-SSD in the future
+    sessionStorage.setItem('detectedObject', centerObject.class);
 
-    // for now - show success message
-    alert('Image captured! Object detection coming soon.');
+    // stop detection
+    if (detectionInterval) {
+        clearInterval(detectionInterval);
+    }
 
     // navigate to result screen
-    window.location.href = 'result-screen.html'
+    window.location.href = 'result-screen.html';
 }
