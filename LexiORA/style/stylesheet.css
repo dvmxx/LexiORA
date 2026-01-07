@@ -446,6 +446,117 @@ p {
 
 /* Collection screen */
 
+.collection-container {
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 100px;
+    min-height: 100vh;
+}
+
+.collection-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    width: 100%;
+    max-width: 350px;
+    padding: 12px 20px;
+    border: 2px solid var(--light-gray);
+    border-radius: 25px;
+    font-size: 16px;
+    margin: 20px auto;
+    display: block;
+    transition: border-color 0.3s;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: var(--turquoise);
+}
+
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.collection-card {
+    background-color: white;
+    border: 2px solid var(--light-gray);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.collection-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: var(--turquoise);
+}
+
+.collection-card:active {
+    transform: translateY(-2px);
+}
+
+.card-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: var(--light-gray);
+}
+
+.card-heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: var(--dark-gray);
+}
+
+.card-date {
+    font-size: 12px;
+    color: #999;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+}
+
+.empty-state-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.empty-state-text {
+    font-size: 18px;
+    color: var(--dark-gray);
+    margin-bottom: 30px;
+}
+
+.hidden {
+    display: none;
+}
+
 
 /* Settings screen */
 
