@@ -1,5 +1,6 @@
 /* CSS variables (Design System) */
 
+
 :root {
     --primary-blue: #4A90E2;
     --background-white: #FFFFFF;
@@ -21,7 +22,10 @@ body {
     background-color: var(--background-white);
     color: var(--dark-gray);
     line-height: 1.6;
-    min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: fixed;
 }
 
 /* Typography */
@@ -50,12 +54,13 @@ p {
     max-width: 430px;
     margin: 0 auto;
     padding: 20px;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding-bottom: 100px; /*space for bottom nav */
+    box-sizing: border-box;
 }
 
 /* Buttons */
@@ -192,7 +197,7 @@ p {
 .page-title {
     text-align: center;
     color: var(--turquoise);
-    margin-bottom: 40px;
+    margin-bottom: 10px;
     margin-top: 20px;
 }
 
@@ -560,6 +565,53 @@ p {
 
 /* Settings screen */
 
+.settings-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.profile-header {
+    margin: 15px 0 10px 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.profile-circle {
+    width: clamp(100px, 25vh, 150px);
+    height: clamp(100px, 25vh, 150px);
+    background-color: #E0F2F1;
+    border-radius: 50%;
+    border: 2px solid #B0BEC5;
+    overflow: hidden;
+}
+
+.profile-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 20%;
+}
+
+.settings-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    text-align: left;
+    padding: 15px 20px;
+}
+
+.settings-btn .icon {
+    margin-right: 15px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    min-width: 30px;
+}
 
 /* Success banner */
 
