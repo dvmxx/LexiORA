@@ -2,9 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection - Lexi ORA</title>
+    <link rel="stylesheet" href="../style/stylesheet.css">
 </head>
 <body>
+<!-- collection container -->
+<div class="collection-container">
+    <!-- header -->
+    <div class="collection-header">
+        <h2 class="page-title">Here are your Index Cards!</h2>
 
+        <!-- search bar -->
+        <input type="text"
+               id="searchBar"
+               class="search-bar"
+               placeholder="Search">
+    </div>
+
+    <!-- collection grid -->
+    <div id="collectionGrid" class="collection-grid">
+        <!-- cards will be inserted here by JS -->
+    </div>
+
+    <!-- empty state -->
+    <div id="emptyState" class="empty-state hidden">
+        <div class="empty-state-icon">📚</div>
+        <p class="empty-state-text">
+            Start scanning to build your collection!
+        </p>
+        <button class="btn-primary" id="startScanningBtn">
+            Start Scanning
+        </button>
+    </div>
+</div>
+
+<!-- bottom nav -->
+<nav class="bottom-nav">
+    <div class="nav-icon" data-page="setting-screen.html">
+        ⚙️
+    </div>
+    <div class="nav-icon" data-page="camera-screen.html">
+        📷
+    </div>
+    <div class="nav-icon active" data-page="collection-screen.html">
+        📚
+    </div>
+</nav>
+
+<script src="../business/main.js"></script>
+<script src="../business/storage.js"></script>
 </body>
 </html>

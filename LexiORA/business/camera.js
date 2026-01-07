@@ -1,6 +1,6 @@
 // camera permission and functionality
 
-const SERVER_URL = 'https://10.207.6.219:8000/detect'; // HIER IHRE IP ANPASSEN!
+const SERVER_URL = 'https://172.20.10.2:8000/detect'; // HIER IHRE IP ANPASSEN!
 const DETECTION_INTERVAL = 1000; // Sende alle 1 Sekunde einen Frame
 
 document.addEventListener('DOMContentLoaded', function() {

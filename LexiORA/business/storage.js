@@ -27,7 +27,7 @@ const germanDictionary = {
         pronunciation: "/ˈlɛptɔp/",
         definition: "Tragbarer Computer",
         example: "Ich arbeite an meinem Laptop."
-    },
+    }
     // TODO: add all 80 COCO-SSD objects
 };
 
@@ -35,6 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // check if on result screen
     if (document.getElementById('germanWord')) {
         loadResult();
+    }
+
+    // check if on collection screen
+    if (document.getElementById('collectionGrid')) {
+        loadCollection();
     }
 
     // save button
@@ -50,6 +55,20 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'camera-screen.html';
         });
     }
+
+    // start scanning button (empty state)
+    const startScanningBtn = document.getElementById('startScanningBtn');
+    if (startScanningBtn) {
+        startScanningBtn.addEventListener('click', function() {
+            window.location.href = 'camera-screen.html';
+        });
+    }
+
+    // search functionality
+    const searchBar = document.getElementById('searchBar');
+    if (searchBar) {
+        searchBar.addEventListener('input', filterCollection);
+    }
 });
 
 // load and display result from sessionStorage
@@ -57,6 +76,7 @@ function loadResult() {
     // get data from camera capture (temporary - will come from COCO-SSD)
     const imageData = sessionStorage.getItem('capturedImage');
     const detectedObject = sessionStorage.getItem('detectedObject') || 'cup'; // default for testing
+    const viewMode = sessionStorage.getItem('viewMode'); // check if viewing from collection
 
     // display captured image
     if (imageData) {
@@ -83,6 +103,21 @@ function loadResult() {
         document.getElementById('definition').textContent =
             'Dieses Objekt ist noch nicht in unserem Wörterbuch.';
         document.getElementById('example').textContent = '';
+    }
+
+    // if viewing from collection, hide save button and change "scan another" to "back"
+    if (viewMode === 'collection') {
+        const saveBtn = document.getElementById('saveBtn');
+        const scanAnotherBtn = document.getElementById('scanAnotherBtn');
+
+        if (saveBtn) saveBtn.style.display = 'none';
+        if (scanAnotherBtn) {
+            scanAnotherBtn.textContent = 'Back to Collection';
+            scanAnotherBtn.onclick = function() {
+                sessionStorage.removeItem('viewMode');
+                window.location.href = 'collection-screen.html';
+            };
+        }
     }
 }
 
@@ -126,4 +161,91 @@ function saveToCollection() {
     setTimeout(() => {
         window.location.href = 'collection-screen.html';
     }, 1500);
+}
+
+// load and display collection
+function loadCollection() {
+    const collection = JSON.parse(localStorage.getItem('lexiCollection')) || [];
+    const grid = document.getElementById('collectionGrid');
+    const emptyState = document.getElementById('emptyState');
+
+    if (collection.length === 0) {
+        // show empty state
+        grid.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        return;
+    }
+
+    // hide empty state
+    emptyState.classList.add('hidden');
+    grid.classList.remove('hidden');
+
+    // clear grid
+    grid.innerHTML = '';
+
+    // display cards (newest first)
+    collection.reverse().forEach(item => {
+        const card = createCollectionCard(item);
+        grid.appendChild(card);
+    });
+}
+
+// create collection card element
+function createCollectionCard(item) {
+    const card = document.createElement('div');
+    card.className = 'collection-card';
+    card.dataset.id = item.id;
+
+    // format date
+    const date = new Date(item.timestamp);
+    const formattedDate = date.toLocaleDateString('de-DE', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+
+    card.innerHTML = `
+          <span class="card-heart">❤️</span>
+          <img src="${item.image}" alt="${item.german}" class="card-image">
+          <div class="card-title">${item.german}</div>
+          <div class="card-date">${formattedDate}</div>
+      `;
+
+    // click to view details
+    card.addEventListener('click', function() {
+        viewCardDetails(item.id);
+    });
+
+    return card;
+}
+
+// view card details
+function viewCardDetails(cardId) {
+    const collection = JSON.parse(localStorage.getItem('lexiCollection')) || [];
+    const item = collection.find(card => card.id === cardId);
+
+    if (!item) return;
+
+    // store in sessionStorage and navigate to result screen
+    sessionStorage.setItem('capturedImage', item.image);
+    sessionStorage.setItem('detectedObject', item.objectKey);
+    sessionStorage.setItem('viewMode', 'collection'); // indicate we're viewing from collection
+
+    window.location.href = 'result-screen.html';
+}
+
+// filter collection based on search
+function filterCollection() {
+    const searchTerm = document.getElementById('searchBar').value.toLowerCase();
+    const cards = document.querySelectorAll('.collection-card');
+
+    cards.forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+
+        if (title.includes(searchTerm)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
 }
