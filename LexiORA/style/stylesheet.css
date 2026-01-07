@@ -258,6 +258,44 @@ p {
     object-fit: cover;
 }
 
+.detection-overlay {
+    /* Wichtig: Absolute Positionierung über dem Video */
+    position: absolute;
+
+    /* Z-Index stellt sicher, dass es über dem Video und dem Overlay-Frame liegt */
+    z-index: 10;
+
+    /* Styling für den Text */
+    background-color: rgba(0, 0, 0, 0.7); /* Halbdurchsichtiger Hintergrund */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    white-space: nowrap; /* Verhindert Zeilenumbruch */
+    pointer-events: none; /* Macht den Text nicht anklickbar, damit Klicks auf die Elemente darunter durchgehen */
+
+    /* Startposition (wird dynamisch per JavaScript überschrieben) */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Zentriert das Element um den top/left-Punkt */
+
+    /* Standardmäßig versteckt, bis ein Objekt erkannt wird */
+    display: none;
+}
+
+.status-message {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 20;
+    color: yellow; /* Gut sichtbar auf dunklem Kamerabild */
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
 /* ar viewfinder overlay */
 .camera-overlay {
     position: absolute;
@@ -321,5 +359,3 @@ p {
 
 
 /* Utility */
-
-
