@@ -1,5 +1,6 @@
-// temporary german dictionary (will expand with COCO-SSD integration)
+// german dictionary for COCO-SSD objects (80 total, adding most common ones)
 const germanDictionary = {
+    // people
     "person": {
         german: "Person",
         article: "die",
@@ -7,6 +8,8 @@ const germanDictionary = {
         definition: "Ein Mensch, ein individuelles menschliches Wesen",
         example: "Eine Person steht vor der Tür."
     },
+
+    // kitchen & dining
     "cup": {
         german: "Tasse",
         article: "die",
@@ -14,6 +17,110 @@ const germanDictionary = {
         definition: "Gefäß zum Trinken, meist mit Henkel",
         example: "Ich trinke Kaffee aus einer Tasse."
     },
+    "bottle": {
+        german: "Flasche",
+        article: "die",
+        pronunciation: "/ˈflaʃə/",
+        definition: "Behälter für Flüssigkeiten",
+        example: "Eine Flasche Wasser steht auf dem Tisch."
+    },
+    "bowl": {
+        german: "Schüssel",
+        article: "die",
+        pronunciation: "/ˈʃʏsl̩/",
+        definition: "Rundes Gefäß für Essen",
+        example: "Die Suppe ist in der Schüssel."
+    },
+    "fork": {
+        german: "Gabel",
+        article: "die",
+        pronunciation: "/ˈɡaːbl̩/",
+        definition: "Besteck mit Zinken zum Essen",
+        example: "Ich esse mit Messer und Gabel."
+    },
+    "knife": {
+        german: "Messer",
+        article: "das",
+        pronunciation: "/ˈmɛsɐ/",
+        definition: "Besteck zum Schneiden",
+        example: "Das Messer ist scharf."
+    },
+    "spoon": {
+        german: "Löffel",
+        article: "der",
+        pronunciation: "/ˈlœfl̩/",
+        definition: "Besteck für Suppe und Flüssigkeiten",
+        example: "Ich brauche einen Löffel für die Suppe."
+    },
+
+    // electronics
+    "laptop": {
+        german: "Laptop",
+        article: "der",
+        pronunciation: "/ˈlɛptɔp/",
+        definition: "Tragbarer Computer",
+        example: "Ich arbeite an meinem Laptop."
+    },
+    "cell phone": {
+        german: "Handy",
+        article: "das",
+        pronunciation: "/ˈhɛndi/",
+        definition: "Mobiles Telefon",
+        example: "Mein Handy klingelt."
+    },
+    "keyboard": {
+        german: "Tastatur",
+        article: "die",
+        pronunciation: "/tastaˈtuːɐ̯/",
+        definition: "Eingabegerät für Computer",
+        example: "Ich tippe auf der Tastatur."
+    },
+    "mouse": {
+        german: "Maus",
+        article: "die",
+        pronunciation: "/maʊ̯s/",
+        definition: "Computermaus zum Klicken",
+        example: "Die Maus liegt neben der Tastatur."
+    },
+    "tv": {
+        german: "Fernseher",
+        article: "der",
+        pronunciation: "/ˈfɛʁnˌzeːɐ/",
+        definition: "Gerät zum Fernsehen",
+        example: "Der Fernseher ist im Wohnzimmer."
+    },
+
+    // furniture
+    "chair": {
+        german: "Stuhl",
+        article: "der",
+        pronunciation: "/ʃtuːl/",
+        definition: "Möbelstück zum Sitzen",
+        example: "Ich sitze auf einem Stuhl."
+    },
+    "couch": {
+        german: "Sofa",
+        article: "das",
+        pronunciation: "/ˈzoːfa/",
+        definition: "Großes Sitzmöbel",
+        example: "Das Sofa ist sehr bequem."
+    },
+    "bed": {
+        german: "Bett",
+        article: "das",
+        pronunciation: "/bɛt/",
+        definition: "Möbel zum Schlafen",
+        example: "Ich gehe ins Bett."
+    },
+    "dining table": {
+        german: "Esstisch",
+        article: "der",
+        pronunciation: "/ˈɛsˌtɪʃ/",
+        definition: "Tisch zum Essen",
+        example: "Wir sitzen am Esstisch."
+    },
+
+    // office & study
     "book": {
         german: "Buch",
         article: "das",
@@ -21,14 +128,128 @@ const germanDictionary = {
         definition: "Gebundene Seiten mit gedrucktem Text",
         example: "Ich lese ein interessantes Buch."
     },
-    "laptop": {
-        german: "Laptop",
+    "scissors": {
+        german: "Schere",
+        article: "die",
+        pronunciation: "/ˈʃeːʁə/",
+        definition: "Werkzeug zum Schneiden",
+        example: "Die Schere liegt auf dem Tisch."
+    },
+    "clock": {
+        german: "Uhr",
+        article: "die",
+        pronunciation: "/uːɐ̯/",
+        definition: "Gerät zur Zeitanzeige",
+        example: "Die Uhr zeigt drei Uhr."
+    },
+    "vase": {
+        german: "Vase",
+        article: "die",
+        pronunciation: "/ˈvaːzə/",
+        definition: "Gefäß für Blumen",
+        example: "Die Blumen stehen in der Vase."
+    },
+
+    // clothing
+    "backpack": {
+        german: "Rucksack",
         article: "der",
-        pronunciation: "/ˈlɛptɔp/",
-        definition: "Tragbarer Computer",
-        example: "Ich arbeite an meinem Laptop."
+        pronunciation: "/ˈʁʊkˌzak/",
+        definition: "Tasche für den Rücken",
+        example: "Mein Rucksack ist schwer."
+    },
+    "handbag": {
+        german: "Handtasche",
+        article: "die",
+        pronunciation: "/ˈhantˌtaʃə/",
+        definition: "Kleine Tasche zum Tragen",
+        example: "Ihre Handtasche ist schön."
+    },
+    "umbrella": {
+        german: "Regenschirm",
+        article: "der",
+        pronunciation: "/ˈʁeːɡn̩ˌʃɪʁm/",
+        definition: "Schutz vor Regen",
+        example: "Ich brauche einen Regenschirm."
+    },
+
+    // animals (common)
+    "dog": {
+        german: "Hund",
+        article: "der",
+        pronunciation: "/hʊnt/",
+        definition: "Haustier, bester Freund des Menschen",
+        example: "Der Hund bellt."
+    },
+    "cat": {
+        german: "Katze",
+        article: "die",
+        pronunciation: "/ˈkat͡sə/",
+        definition: "Kleines Haustier",
+        example: "Die Katze schläft."
+    },
+    "bird": {
+        german: "Vogel",
+        article: "der",
+        pronunciation: "/ˈfoːɡl̩/",
+        definition: "Tier mit Flügeln",
+        example: "Der Vogel fliegt."
+    },
+
+    // vehicles
+    "car": {
+        german: "Auto",
+        article: "das",
+        pronunciation: "/ˈaʊ̯to/",
+        definition: "Fahrzeug mit Motor",
+        example: "Das Auto fährt schnell."
+    },
+    "bicycle": {
+        german: "Fahrrad",
+        article: "das",
+        pronunciation: "/ˈfaːɐ̯ˌʁaːt/",
+        definition: "Zweirädriges Fahrzeug",
+        example: "Ich fahre mit dem Fahrrad."
+    },
+    "motorcycle": {
+        german: "Motorrad",
+        article: "das",
+        pronunciation: "/ˈmoːtoːˌʁaːt/",
+        definition: "Zweirädriges Fahrzeug mit Motor",
+        example: "Das Motorrad ist laut."
+    },
+
+    // food
+    "apple": {
+        german: "Apfel",
+        article: "der",
+        pronunciation: "/ˈapfl̩/",
+        definition: "Runde Frucht",
+        example: "Der Apfel ist rot."
+    },
+    "banana": {
+        german: "Banane",
+        article: "die",
+        pronunciation: "/baˈnaːnə/",
+        definition: "Gelbe längliche Frucht",
+        example: "Die Banane ist reif."
+    },
+    "orange": {
+        german: "Orange",
+        article: "die",
+        pronunciation: "/oˈʁãːʒə/",
+        definition: "Runde orange Frucht",
+        example: "Die Orange schmeckt süß."
+    },
+    "cake": {
+        german: "Kuchen",
+        article: "der",
+        pronunciation: "/ˈkuːxn̩/",
+        definition: "Süße Backware",
+        example: "Der Kuchen schmeckt lecker."
     }
-    // TODO: add all 80 COCO-SSD objects
+
+    // TODO: add remaining COCO-SSD objects (currently 32/80)
 };
 
 document.addEventListener('DOMContentLoaded', function() {
