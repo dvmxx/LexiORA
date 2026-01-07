@@ -22,10 +22,8 @@ body {
     background-color: var(--background-white);
     color: var(--dark-gray);
     line-height: 1.6;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    position: fixed;
+    min-height: 100vh; /* Mindestens so hoch wie das Display */
+    overflow-y: auto;  /* Erlaubt vertikales Scrollen, wenn nötig */
 }
 
 /* Typography */
@@ -54,12 +52,12 @@ p {
     max-width: 430px;
     margin: 0 auto;
     padding: 20px;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-bottom: 100px; /*space for bottom nav */
+    padding-bottom: 120px; /*space for bottom nav */
     box-sizing: border-box;
 }
 
@@ -99,11 +97,12 @@ p {
     background-color: white;
     display: flex;
     justify-content: space-around;
-    padding: 12px 0;
+    padding: 8px 0; /* reduced from 12px */
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     max-width: 430px;
     margin: 0 auto;
     z-index: 100;
+    min-height: 60px; /* ensure minimum height */
 }
 
 .nav-icon {
@@ -248,10 +247,15 @@ p {
 /* Camera screen */
 
 .camera-container {
-    position: relative;
+    position: fixed; /* changed from relative */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
     max-width: 430px;
     height: 100vh;
+    height: 100dvh; /* dynamic viewport height - modern browsers */
     margin: 0 auto;
     overflow: hidden;
     background-color: black;
@@ -261,44 +265,6 @@ p {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.detection-overlay {
-    /* Wichtig: Absolute Positionierung über dem Video */
-    position: absolute;
-
-    /* Z-Index stellt sicher, dass es über dem Video und dem Overlay-Frame liegt */
-    z-index: 10;
-
-    /* Styling für den Text */
-    background-color: rgba(0, 0, 0, 0.7); /* Halbdurchsichtiger Hintergrund */
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 1.1em;
-    font-weight: bold;
-    white-space: nowrap; /* Verhindert Zeilenumbruch */
-    pointer-events: none; /* Macht den Text nicht anklickbar, damit Klicks auf die Elemente darunter durchgehen */
-
-    /* Startposition (wird dynamisch per JavaScript überschrieben) */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Zentriert das Element um den top/left-Punkt */
-
-    /* Standardmäßig versteckt, bis ein Objekt erkannt wird */
-    display: none;
-}
-
-.status-message {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 20;
-    color: yellow; /* Gut sichtbar auf dunklem Kamerabild */
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 5px;
-    border-radius: 3px;
-    font-size: 0.9em;
 }
 
 /* ar viewfinder overlay */
@@ -326,11 +292,13 @@ p {
     border-radius: 20px;
     font-size: 14px;
     z-index: 10;
+    max-width: 80%;
+    text-align: center;
 }
 
 .camera-controls {
-    position: absolute;
-    bottom: 100px;
+    position: fixed; /* changed from absolute */
+    bottom: 80px; /* reduced from 100px to fit better */
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -349,6 +317,36 @@ p {
 .capture-btn:active {
     transform: scale(0.95);
     background-color: var(--turquoise);
+}
+
+/* detection labels */
+.detection-labels {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.detection-label {
+    position: absolute;
+    background-color: rgba(77, 182, 172, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -100%);
+    white-space: nowrap;
+}
+
+.detection-label.primary {
+    background-color: rgba(245, 166, 35, 0.95);
+    font-size: 16px;
+    padding: 10px 16px;
 }
 
 /* Result screen */

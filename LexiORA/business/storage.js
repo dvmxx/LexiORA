@@ -1,4 +1,4 @@
-// temporary german dictionary (will expand with COCO-SSD integration)
+// german dictionary for COCO-SSD objects (80 total, adding most common ones)
 const germanDictionary = {
         "person": {german: "Person", article: "die", pronunciation: "/pɛʁˈzoːn/", definition: "Ein Mensch, ein individuelles menschliches Wesen", example: "Eine Person steht vor der Tür."},
         "bicycle": { german: "Fahrrad", article: "das", pronunciation: "/ˈfaːɐ̯ʁaːt/", definition: "Zweirädriges Fahrzeug", example: "Ich fahre mit dem Fahrrad." },

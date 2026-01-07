@@ -16,14 +16,12 @@
     <!-- ar overlay frame -->
     <div class="camera-overlay"></div>
 
-    <div id="detectionOverlay" class="detection-overlay"></div>
-    <canvas id="frameCanvas" style="display:none;"></canvas> <p id="status" class="status-message">Initialisiere...</p> <div class="camera-hint">
-    Center the object in the frame
-</div>
+    <!-- detection labels container -->
+    <div id="detectionLabels" class="detection-labels"></div>
 
     <!-- hint text -->
-    <div class="camera-hint">
-        Center the object in the frame
+    <div class="camera-hint" id="cameraHint">
+        Loading AI model...
     </div>
 
     <!-- capture button -->
@@ -44,6 +42,10 @@
         <i class="fa-solid fa-book-bookmark"></i>
     </div>
 </nav>
+
+<!-- TensorFlow.js and COCO-SSD -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
 
 <script src="../business/main.js"></script>
 <script src="../business/camera.js"></script>
