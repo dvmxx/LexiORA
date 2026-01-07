@@ -2,9 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result - Lexi ORA</title>
+    <link rel="stylesheet" href="../style/stylesheet.css">
 </head>
 <body>
+<!-- result container -->
+<div class="result-container">
+    <!-- captured image -->
+    <img id="capturedImage" class="result-image" alt="Captured object">
 
+    <!-- result card with lexi -->
+    <div class="result-card">
+        <!-- lexi celebrating -->
+        <div class="result-mascot">
+            <div class="mascot-small mascot-placeholder">
+                🎉
+            </div>
+        </div>
+
+        <!-- german word -->
+        <h1 class="word-title" id="germanWord">Loading...</h1>
+
+        <!-- pronunciation -->
+        <p class="pronunciation" id="pronunciation">/...</p>
+
+        <!-- definition -->
+        <p class="definition" id="definition">
+            Loading word information...
+        </p>
+
+        <!-- example sentence -->
+        <div class="example" id="example">
+            <strong>Example:</strong> ...
+        </div>
+    </div>
+
+    <!-- action buttons -->
+    <div class="result-actions">
+        <button class="btn-secondary" id="scanAnotherBtn">
+            Scan Another
+        </button>
+        <button class="btn-primary" id="saveBtn">
+            Save to Collection
+        </button>
+    </div>
+</div>
+
+<!-- bottom nav -->
+<nav class="bottom-nav">
+    <div class="nav-icon" data-page="setting-screen.html">
+        ⚙️
+    </div>
+    <div class="nav-icon" data-page="camera-screen.html">
+        📷
+    </div>
+    <div class="nav-icon active" data-page="collection-screen.html">
+        📚
+    </div>
+</nav>
+
+<script src="../business/main.js"></script>
+<script src="../business/storage.js"></script>
 </body>
 </html>

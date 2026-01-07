@@ -1,8 +1,8 @@
 # LexiORA
 Starting the Server
 
-1. Navigate to your project directory (you're already there):
-   cd C:\Users\roggi\Desktop\LexiORA
+1. Navigate to your project directory:
+   cd C:\Users\YOURDIRECTORY\Desktop\LexiORA
 
 2. Start the HTTPS server:
    python https_server.py
