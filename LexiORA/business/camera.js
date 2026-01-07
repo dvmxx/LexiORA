@@ -79,8 +79,13 @@ function captureImage() {
     // TODO: send to COCO-SSD for object detection
     console.log('Image captured:', imageData.substring(0, 50) + '...');
 
+    //for testing - sessionStorage
+    sessionStorage.setItem('captureImage', imageData);
+    sessionStorage.setItem('detectedObject', 'cup'); //will be from COCO-SSD in the future
+
     // for now - show success message
     alert('Image captured! Object detection coming soon.');
 
-    // TODO: navigate to result screen with detected object
+    // navigate to result screen
+    window.location.href = 'result-screen.html'
 }
