@@ -6,6 +6,8 @@ from PIL import Image
 import io
 import cv2
 import tensorflow.lite as tflite
+from flask import render_template
+
 
 # --- Configuration ---
 HOST = "0.0.0.0"
@@ -18,8 +20,15 @@ LABEL_PATH = 'coco_labels.txt'
 MIN_CONFIDENCE = 0.50 # Mindestkonfidenz für die Erkennung
 INPUT_SIZE = (416, 416) # Größe des Modells (SSDMobileNetV2)
 # ---------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LEXIORA_DIR = os.path.join(BASE_DIR, "LexiORA")
 
-app = Flask(__name__, static_url_path='', static_folder='.')
+app = Flask(
+    __name__,
+    template_folder=os.path.join(LEXIORA_DIR, "templates"),
+    static_folder=LEXIORA_DIR,
+    static_url_path=""
+)
 INTERPRETER = None
 LABELS = []
 
@@ -162,15 +171,29 @@ def detect_objects():
 # =========================================================================
 # Dateiserver-Endpunkt (unverändert)
 # =========================================================================
-@app.route('/welcome-screen.html')
-def serve_static(filename):
-    # Dient statische Dateien (wie welcome-page.html, style/stylesheet.css, business/main.js etc.)
-    return send_from_directory(os.getcwd(), filename)
-
-@app.route('/')
+@app.route("/")
 def serve_root():
-    # Leitet den Hauptpfad zur Welcome-Seite um (wie besprochen)
-    return send_from_directory(os.getcwd(), 'welcome-page.html')
+    return render_template("welcome-screen.html")
+
+@app.route("/explorer-screen.html")
+def explorer():
+    return render_template("explorer-screen.html")
+
+@app.route("/camera-screen.html")
+def camera():
+    return render_template("camera-screen.html")
+
+@app.route("/collection-screen.html")
+def collection():
+    return render_template("collection-screen.html")
+
+@app.route("/result-screen.html")
+def result():
+    return render_template("result-screen.html")
+
+@app.route("/setting-screen.html")
+def setting():
+    return render_template("setting-screen.html")
 
 # =========================================================================
 # Server starten mit HTTPS-Kontext
