@@ -5,7 +5,8 @@ import numpy as np
 from PIL import Image
 import io
 import cv2
-import tensorflow.lite as tflite
+import sys
+from tflite_runtime import interpreter as tflite
 
 # --- Configuration ---
 HOST = "0.0.0.0"
@@ -188,8 +189,13 @@ if __name__ == '__main__':
             context.load_cert_chain(CERT_FILE)
             print(f"✅ Starte Flask Server auf https://{HOST}:{PORT}")
 
-            # Flask mit HTTPS-Kontext starten
-            app.run(host=HOST, port=PORT, ssl_context=context)
+            if (sys.argv[1] == 'insecure'):
+                print("Starte HTTP-Server (ohne HTTPS).")
+                app.run(host=HOST, port=PORT)
+            else:
+                # Flask mit HTTPS-Kontext starten
+                app.run(host=HOST, port=PORT, ssl_context=context)
+
 
         except Exception as e:
             print(f"Fehler beim Starten des Servers: {e}")

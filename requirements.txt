@@ -1,0 +1,7 @@
+# https://pip.pypa.io/en/stable/reference/requirements-file-format/
+# This file lists the Python package dependencies for the project.
+flask
+numpy<2
+pillow
+opencv-python-headless
+tflite-runtime
