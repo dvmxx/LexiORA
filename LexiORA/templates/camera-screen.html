@@ -8,23 +8,17 @@
     <link rel="stylesheet" href="../style/stylesheet.css">
 </head>
 <body>
-<!-- camera container -->
 <div class="camera-container">
-    <!-- camera feed -->
     <video id="cameraFeed" class="camera-view" autoplay playsinline></video>
 
-    <!-- ar overlay frame -->
     <div class="camera-overlay"></div>
 
-    <!-- detection labels container -->
     <div id="detectionLabels" class="detection-labels"></div>
 
-    <!-- hint text -->
     <div class="camera-hint" id="cameraHint">
         Loading AI model...
     </div>
 
-    <!-- capture button -->
     <div class="camera-controls">
         <button class="capture-btn" id="captureBtn">
             <img
@@ -36,7 +30,6 @@
     </div>
 </div>
 
-<!-- bottom nav -->
 <nav class="bottom-nav">
     <div class="nav-icon" data-page="setting-screen.html">
         <i class="fa-solid fa-gear"></i>
@@ -49,7 +42,6 @@
     </div>
 </nav>
 
-<!-- TensorFlow.js and COCO-SSD -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
 

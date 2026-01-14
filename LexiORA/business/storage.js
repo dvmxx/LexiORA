@@ -1,4 +1,3 @@
-// german dictionary for COCO-SSD objects (80 total, adding most common ones)
 const germanDictionary = {
     "person": {german: "Person", article: "die", pronunciation: "/pɛʁˈzoːn/", definition: "Ein Mensch, ein individuelles menschliches Wesen", example: "Eine Person steht vor der Tür."},
     "bicycle": { german: "Fahrrad", article: "das", pronunciation: "/ˈfaːɐ̯ʁaːt/", definition: "Zweirädriges Fahrzeug", example: "Ich fahre mit dem Fahrrad." },
@@ -84,23 +83,19 @@ const germanDictionary = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-    // check if on result screen
     if (document.getElementById('germanWord')) {
         loadResult();
     }
 
-    // check if on collection screen
     if (document.getElementById('collectionGrid')) {
         loadCollection();
     }
 
-    // save button
     const saveBtn = document.getElementById('saveBtn');
     if (saveBtn) {
         saveBtn.addEventListener('click', saveToCollection);
     }
 
-    // scan another button
     const scanAnotherBtn = document.getElementById('scanAnotherBtn');
     if (scanAnotherBtn) {
         scanAnotherBtn.addEventListener('click', function() {
@@ -111,13 +106,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const backToCollectionBtn = document.getElementById('backToCollectionBtn');
     if (backToCollectionBtn) {
         backToCollectionBtn.addEventListener('click', function() {
-            console.log("Back to Collection geklickt"); // Test-Log
-            sessionStorage.removeItem('viewMode'); // Modus zurücksetzen
+            sessionStorage.removeItem('viewMode');
             window.location.href = 'collection-screen.html';
         });
     }
 
-    // start scanning button (empty state)
     const startScanningBtn = document.getElementById('startScanningBtn');
     if (startScanningBtn) {
         startScanningBtn.addEventListener('click', function() {
@@ -125,30 +118,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // search functionality
     const searchBar = document.getElementById('searchBar');
     if (searchBar) {
         searchBar.addEventListener('input', filterCollection);
     }
 });
 
-// load and display result from sessionStorage
 function loadResult() {
-    // get data from camera capture (temporary - will come from COCO-SSD)
     const imageData = sessionStorage.getItem('capturedImage');
-    const detectedObject = sessionStorage.getItem('detectedObject') || 'cup'; // default for testing
-    const viewMode = sessionStorage.getItem('viewMode'); // check if viewing from collection
+    const detectedObject = sessionStorage.getItem('detectedObject') || 'cup';
+    const viewMode = sessionStorage.getItem('viewMode');
 
     const saveBtn = document.getElementById('saveBtn');
     const scanAnotherBtn = document.getElementById('scanAnotherBtn');
     const backToCollectionBtn = document.getElementById('backToCollectionBtn');
 
-    // display captured image
     if (imageData) {
         document.getElementById('capturedImage').src = imageData;
     }
 
-    // get german translation
     const translation = germanDictionary[detectedObject];
 
     if (translation) {
@@ -161,20 +149,18 @@ function loadResult() {
         document.getElementById('example').innerHTML =
             `<strong>Beispiel:</strong> ${translation.example}`;
     } else {
-        // object not in dictionary
         document.getElementById('germanWord').textContent =
-            'Unbekanntes Objekt';
+            'Unknown object';
         document.getElementById('pronunciation').textContent = '';
         document.getElementById('definition').textContent =
-            'Dieses Objekt ist noch nicht in unserem Wörterbuch.';
+            'This object is not in our lexicon.';
         document.getElementById('example').textContent = '';
     }
 
-    // if viewing from collection, hide save button and change "scan another" to "back"
     if (viewMode === 'collection') {
-        if (saveBtn) saveBtn.classList.add('hidden');           // Speichern weg
-        if (scanAnotherBtn) scanAnotherBtn.classList.add('hidden'); // "Scan Another" weg
-        if (backToCollectionBtn) backToCollectionBtn.classList.remove('hidden'); // "Back" herzeigen
+        if (saveBtn) saveBtn.classList.add('hidden');
+        if (scanAnotherBtn) scanAnotherBtn.classList.add('hidden');
+        if (backToCollectionBtn) backToCollectionBtn.classList.remove('hidden');
     } else {
         if (saveBtn) saveBtn.classList.remove('hidden');
         if (scanAnotherBtn) scanAnotherBtn.classList.remove('hidden');
@@ -182,21 +168,18 @@ function loadResult() {
     }
 }
 
-// save to collection (localStorage)
 function saveToCollection() {
     const imageData = sessionStorage.getItem('capturedImage');
     const detectedObject = sessionStorage.getItem('detectedObject') || 'cup';
     const translation = germanDictionary[detectedObject];
 
     if (!translation) {
-        alert('Kann unbekanntes Objekt nicht speichern.');
+        alert('Cannot save unknown object.');
         return;
     }
 
-    // get existing collection from localStorage
     let collection = JSON.parse(localStorage.getItem('lexiCollection')) || [];
 
-    // create new entry
     const entry = {
         id: Date.now(),
         timestamp: new Date().toISOString(),
@@ -209,55 +192,44 @@ function saveToCollection() {
         example: translation.example
     };
 
-    // add to collection
     collection.push(entry);
 
-    // save to localStorage
     localStorage.setItem('lexiCollection', JSON.stringify(collection));
 
-    // show success message
     showSuccess('Added to My Index Cards');
 
-    // redirect to collection after delay
     setTimeout(() => {
         window.location.href = 'collection-screen.html';
     }, 1500);
 }
 
-// load and display collection
 function loadCollection() {
     const collection = JSON.parse(localStorage.getItem('lexiCollection')) || [];
     const grid = document.getElementById('collectionGrid');
     const emptyState = document.getElementById('emptyState');
 
     if (collection.length === 0) {
-        // show empty state
         grid.classList.add('hidden');
         emptyState.classList.remove('hidden');
         return;
     }
 
-    // hide empty state
     emptyState.classList.add('hidden');
     grid.classList.remove('hidden');
 
-    // clear grid
     grid.innerHTML = '';
 
-    // display cards (newest first)
     collection.reverse().forEach(item => {
         const card = createCollectionCard(item);
         grid.appendChild(card);
     });
 }
 
-// create collection card element
 function createCollectionCard(item) {
     const card = document.createElement('div');
     card.className = 'collection-card';
     card.dataset.id = item.id;
 
-    // format date
     const date = new Date(item.timestamp);
     const formattedDate = date.toLocaleDateString('de-DE', {
         day: '2-digit',
@@ -272,7 +244,6 @@ function createCollectionCard(item) {
           <div class="card-date">${formattedDate}</div>
       `;
 
-    // click to view details
     card.addEventListener('click', function() {
         viewCardDetails(item.id);
     });
@@ -280,22 +251,19 @@ function createCollectionCard(item) {
     return card;
 }
 
-// view card details
 function viewCardDetails(cardId) {
     const collection = JSON.parse(localStorage.getItem('lexiCollection')) || [];
     const item = collection.find(card => card.id === cardId);
 
     if (!item) return;
 
-    // store in sessionStorage and navigate to result screen
     sessionStorage.setItem('capturedImage', item.image);
     sessionStorage.setItem('detectedObject', item.objectKey);
-    sessionStorage.setItem('viewMode', 'collection'); // indicate we're viewing from collection
+    sessionStorage.setItem('viewMode', 'collection');
 
     window.location.href = 'result-screen.html';
 }
 
-// filter collection based on search
 function filterCollection() {
     const searchTerm = document.getElementById('searchBar').value.toLowerCase();
     const cards = document.querySelectorAll('.collection-card');
