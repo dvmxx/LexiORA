@@ -66,7 +66,9 @@ p {
     width: 100%;
     display: flex;
     justify-content: center; /* Button exakt wie vorher */
-    margin-top: 20px;
+    align-items: center;
+    gap: 15px;
+    margin-top: 30px;
 }
 
 .side-mascot {
@@ -153,10 +155,17 @@ p {
 }
 
 .mascot {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    animation: float 3s ease-in-out infinite;
+    width: 150px;
+    height: 150px;
+    background: #1a2a3a; /* Ein schönes Dunkelblau/Grau für den Kreis */
+    border-radius: 50%;  /* Macht es rund */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: float 3s ease-in-out infinite; /* Die Bewegung */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+    margin: 0 auto; /* Zentriert den Kreis selbst */
 }
 
 .mascot-placeholder {
@@ -272,7 +281,6 @@ p {
     bottom: 0;
     width: 100%;
     max-width: 430px;
-    height: 100vh;
     height: 100dvh; /* dynamic viewport height - modern browsers */
     margin: 0 auto;
     overflow: hidden;
@@ -416,6 +424,12 @@ p {
 
 .result-container .mascot {
     animation: none;
+}
+
+.mascot img {
+    width: 100%; /* Bild ist etwas kleiner als der Kreis */
+    height: 100%;
+    object-fit: contain;
 }
 
 .result-mascot .mascot-small {
