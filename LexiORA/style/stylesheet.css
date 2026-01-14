@@ -76,8 +76,7 @@ p {
     height: 150px;
 
     /* HIER IST DIE FARBE: Ein dunkler Mix aus deinen App-Farben */
-    background: linear-gradient(135deg, #1a2a3a, #2c3e50);
-
+    background: linear-gradient(135deg, #4DB6AC, #4A90E2);
     border-radius: 50%; /* Macht es rund */
     display: flex;
     align-items: center;
