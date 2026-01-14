@@ -1,0 +1,338 @@
+---
+title: "LexiORA - Object Recognition Assistant for Language Learning"
+description: "An AR-based mobile web application that helps international students learn German vocabulary through real-time object recognition.
+Point your camera at everyday objects and instantly receive German translations with pronunciation, articles, and contextual examples."
+author:
+  - name: Franziska Schnetzer
+  - name: Mirjam Feichtinger
+  - name: Manuel Ortler
+  - name: Dominik Rogginer
+date: "11/27/2025"
+date-modified: "01/21/2026"
+image: "assets/DigitalPoster_LexiORA_SchnetzerFeichtingerOrtlerRogginer.png"
+categories:
+  - Computer Vision
+  - Machine Learning
+  - Web Development
+  - Progressive Web App
+  - Education Technology
+  - Language Learning
+  - TensorFlow.js
+  - Flask
+  - code
+  - analysis
+  - WiSe2025/2026
+other-links:
+  - text: GitHub Repository
+    href: https://github.com/dvmxx/LexiORA.git
+    icon: github
+  - text: Live Demo
+    href: https://lexiora.at
+    icon: play-circle
+  - text: Project Report (PDF)
+    href: assets/LexiORA_WebApplications_SchnetzerFeichtingerOrtlerRogginer.pdf
+    icon: file-pdf
+resources:
+  - assets/lexi-curious.png
+  - assets/lexi-teaching.png
+  - assets/lexi-reading.png
+  - assets/lexi-idea.png
+  - assets/lexi-learning.png
+  - assets/lexi-scanning.png
+  - detect.tflite
+  - coco_labels.txt
+---
+
+# LexiORA - Object Recognition Assistand for Language Learning
+
+## Overview
+
+LexiORA is an augmented reality-based language learning application designed to help international students learn German vocabulary through real-world object recognition.
+The app allows users to point their smartphone camera at everyday objects and instantly receive the German word, pronunciation, article, definition, and usage examples.
+Built as a progressive web application with real-time object detection, LexiORA combines mobile-first design, computer vision, and an engaging mascot experience to
+create an intuitive learning tool that transforms any environment into a German language classroom.
+
+## Objectives
+
+### Primary Goals:
+
+- Create an accessible mobile web application for vocabulary acquisition that requires no app store installation
+- Implement real-time object detection to identify everyday objects and provide German translations
+- Design an engaging, mascot-driven user experience with "Lexi" as the friendly robot guide
+- Enable persistent learning through a personal collection feature for reviewed vocabulary
+
+### Key Constraints:
+
+- Development timeline: 8 weeks (November 2025 - January 2026)
+- Team size: 4 members
+- Target platform: Mobile web browsers with camera access (iOS Safari, Android Chrome)
+- Technology requirement: Must work without backend database (local storage only)
+- Hardware constraint: Client-side inference suitable for mobile devices
+
+## Approach & Architecture
+
+### System Architecture
+
+LexiORA follows a hybrid client-server architecture optimized for mobile deployment:
+
+![System Architecture Diagram](assets/lexiora-system-architecture.png)
+
+*LexiORA's hybrid architecture with client-side ML inference and Flask backend for static file serving*
+
+### Key Design Decisions
+1. Progressive Web App (PWA) Architecture
+
+Rationale: Eliminates app store deployment friction, allows instant access via URL
+Implementation: Responsive design with viewport adaptation, mobile-first CSS
+Trade-off: Requires HTTPS (self-signed certificate for development)
+
+2. Hybrid ML Approach
+
+Client-side (Primary): COCO-SSD via TensorFlow.js for low latency
+Server-side (Backup): TFLite model with Flask endpoint for offline capability
+Rationale: Client-side inference provides real-time feedback (~500ms detection cycle), server maintains model flexibility
+
+3. Camera-Centric UI with AR Frame
+
+Design Pattern: Full-screen camera view with centered AR target frame
+Detection Logic: Prioritizes objects closest to frame center
+User Feedback: Live confidence scores and floating labels on detected objects
+
+4. Local-First Data Strategy
+
+Storage: SessionStorage for temporary captures, LocalStorage for persistent collections
+Dictionary: Embedded JavaScript object with 80+ COCO labels mapped to German
+Trade-off: No cloud sync, but maintains privacy and works offline
+
+5. Mascot-Driven Onboarding
+
+Character: "Lexi" - friendly robot assistant with 8 emotional states
+Purpose: Reduces intimidation factor, guides users through permissions
+States: curious, idea, learning, profile, reading, scanning, show, teaching
+
+## Implementation
+
+### Technology Stack
+**Frontend**:
+
+- HTML5 (Semantic markup, accessibility attributes)
+- CSS3 (Flexbox/Grid, CSS Variables for theming, media queries)
+- Vanilla JavaScript (ES6+, no framework dependencies)
+- MediaDevices API (getUserMedia for camera access)
+- Canvas API (Image capture and manipulation)
+
+**Backend**:
+
+- Python 3.10+
+- Flask 2.3 (Lightweight web server)
+- OpenSSL (Self-signed certificate generation)
+
+**Machine Learning**:
+
+- TensorFlow.js (COCO-SSD model for browser-based inference)
+- TensorFlow Lite (SSD MobileNet V2 model for server-side detection)
+- NumPy, PIL, OpenCV (Image preprocessing)
+
+**Development Tools**:
+
+- Git (Version control)
+- Chrome DevTools (Mobile device emulation)
+- intelliJ
+
+### Data Sources and Preprocessing
+**Object Detection Model**:
+
+- **Source:** Pre-trained COCO-SSD (80 object classes from COCO dataset)
+- **Preprocessing:**
+    - Video frames captured at 1280x720 resolution
+    - Resized to 416x416 for TFLite model input
+    - Normalized to uint8 RGB format
+    - No data augmentation (real-time inference)
+
+**German Dictionary:**
+
+- Source: Manual compilation of 80+ translations
+- Structure: JSON-like object with:
+    - german: Translation
+    - article: der/die/das (grammatical gender)
+    - pronunciation: IPA notation
+    - definition: Short German explanation
+    - example: Context sentence
+
+Example Entry:
+
+```javascript
+"laptop": {
+  german: "Laptop",
+  article: "der",
+  pronunciation: "/ˈlɛptɔp/",
+  definition: "Tragbarer Computer",
+  example: "Ich arbeite an meinem Laptop."
+}
+```
+
+### Deployment and Runtime
+**Development Environment:**
+
+1. Local HTTPS server: python https_server.py
+2. Server listens on https://0.0.0.0:8000
+3. Access via mobile browser: https://<LOCAL_IP>:8000/LexiORA/templates/welcome-screen.html
+
+**Network Requirements:**
+
+- Same WiFi network for development (or mobile hotspot)
+- SSL certificate acceptance (self-signed warning)
+- Camera permissions granted in browser
+
+**Browser Compatibility:**
+
+- iOS Safari 14+
+- Android Chrome 90+
+- Desktop Chrome/Edge (development testing)
+- Firefox (requires getUserMedia polyfill)
+
+**Code Quality Practices**
+
+- Modular Structure: Separation of concerns (camera logic, storage, navigation)
+- Error Handling: Try-catch blocks for camera access, model loading
+- User Feedback: Loading indicators, permission prompts, success banners
+- Responsive Design: Dynamic viewport height calculation for mobile browsers
+- Accessibility: Semantic HTML, ARIA labels for screen readers (future enhancement)
+
+## Results & Evaluation
+
+### Success Metrics
+**Technical Performance:**
+
+- Object detection latency: ~500ms per frame (client-side COCO-SSD)
+- Detection confidence threshold: 60% (balances precision/recall)
+- Camera stream resolution: 1280x720 (optimal for mobile)
+- Model accuracy: 80+ object classes with reliable indoor/outdoor detection
+- Page load time: <2 seconds on 4G connection
+
+**User Experience:**
+
+- Zero-installation access via URL (PWA benefit)
+- Intuitive 3-step flow: Scan → Learn → Save
+- Persistent vocabulary collection with visual thumbnails
+- Mascot engagement (Lexi appears in 6 screens with contextual expressions)
+
+**Educational Value:**
+
+- Immediate feedback loop (real-world object → German word in <1 second)
+- Comprehensive word information (article, pronunciation, example)
+- Contextual learning through actual environment
+
+### What Worked Well
+
+- Real-time Detection UX: The live camera feed with floating labels provides instant gratification and maintains user engagement
+- Mascot Integration: Lexi's friendly presence significantly reduces app intimidation factor (observed in informal user testing)
+- Local Storage Strategy: No backend complexity allows fast development and maintains user privacy
+- Hybrid ML Approach: Client-side inference provides low latency while server-side backup ensures flexibility
+- Mobile-First Design: Viewport height calculations and touch-optimized UI work seamlessly across devices
+
+### Limitations and Shortcomings
+
+1. Object Coverage: COCO-SSD limited to 80 classes - misses many common items (e.g., pen, paper, door)
+    - Impact: Users may point at objects that aren't recognized
+    - Workaround: Clear messaging about supported objects
+
+2. Dictionary Completeness: Not all COCO classes have German translations
+    - Current Status: 80+ entries manually curated
+    - Missing: Some animals and specialized objects
+
+3. No Custom Model Training: Using pre-trained COCO-SSD prevents domain-specific optimization
+    - Impact: Cannot add custom vocabulary categories (e.g., office supplies, classroom items)
+
+4. Network Dependency: Requires local server for development
+    - Impact: Not truly standalone for end-users
+    - Solution Needed: Deploy to public HTTPS server or convert to full PWA with service workers
+
+5. Browser Compatibility: getUserMedia API requires HTTPS and recent browser versions
+    - Impact: Older devices may not support the app
+    - Partial Solution: Graceful degradation with clear error messages
+
+## Screenshots and Demonstrations
+
+![Welcome Screen - Lexi greeting with "Take a Tour" CTA](assets/welcome-screen.jpeg)
+
+![Explorer Screen - Camera permission request](assets/explorer-screen.jpeg)
+
+![Camera Screen - Live detection with AR frame](assets/camera-screen.jpeg)
+
+![Result Screen - Detailed word card with pronunciation guide](assets/result-screen.jpeg)
+
+![Collection Screen - Grid view of saved vocabulary items](assets/collection-screen.jpeg)
+
+![Settings Screen - User preferences and configuration](assets/settings-screen.jpeg)
+
+## Challenges & Lessons Learned
+
+**Key Technical Challenges:**
+
+- HTTPS Camera Access: Modern browsers require SSL certificates for getUserMedia API - solved with self-signed certificates for development
+- Mobile Viewport Issues: iOS Safari's dynamic toolbar required custom JavaScript viewport height calculations
+- Model Output Parsing: TFLite model's unconventional 3-tensor output structure needed experimental analysis to decode correctly
+- Real-time Performance: Reduced detection frequency to 500ms intervals to prevent lag on lower-end mobile devices
+- Permission UX: Dedicated permission screen with Lexi mascot significantly reduced user friction and rejection rates
+
+**Design Learnings:**
+
+- Mobile UI requires ruthless information prioritization - card-based layouts with clear hierarchy work best
+- Hybrid approach (AR frame + full-screen detection) balances user guidance with transparency
+- LocalStorage is viable for educational apps without backend complexity
+
+**Process Insights:**
+
+- Early user testing revealed need for immediate vocabulary value over pure mascot engagement
+- Pivoting from custom model training to pre-trained COCO-SSD kept project on timeline
+- Mobile-first development is essential - desktop testing misses critical mobile-specific issues
+- German dictionary curation took 40% of development time but provides core educational value
+
+**What We'd Do Differently:**
+Use a component framework (React/Vue) instead of vanilla JavaScript, deploy to cloud earlier for real-device testing,
+implement backend storage for multi-device sync, add Web Speech API for audio pronunciation, and conduct formal user
+research with FHV's language school
+
+## Future Work
+
+- Service Worker integration for offline functionality and daily practice reminders
+- Web Speech API for audio pronunciation of German words
+- Expanded dictionary to 200+ objects including plural forms and regional dialects
+- Spaced repetition flashcard system for collection review
+- UI polish with haptic feedback and swipe gestures
+- Custom training for domain-specific objects (classroom, office, household items)
+- Multi-language support (French, Spanish, Italian)
+- Social features: collection sharing, collaborative challenges, leaderboards
+
+## Links & Resources
+
+- Repository: https://github.com/dvmxx/LexiORA
+- Demo: https://lexiora.at
+
+**Documentation:**
+- Technical Setup: README.md in project root
+- API Documentation: Inline comments in https_server.py
+- Dictionary Schema: business/storage.js (lines 1-84)
+
+**Related Technologies:**
+- TensorFlow.js COCO-SSD: https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd
+- TensorFlow Lite: https://www.tensorflow.org/lite
+- MediaDevices API: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices
+- Flask Documentation: https://flask.palletsprojects.com/
+
+**Assets:**
+- Lexi Mascot Illustrations: assets/images/lexi-*.png (8 variations)
+- Detection Model: detect.tflite (SSD MobileNet V2, 4MB)
+- COCO Labels: coco_labels.txt (80 class names)
+![LexiORA Project Poster](assets/DigitalPoster_LexiORA_SchnetzerFeichtingerOrtlerRogginer.png)
+
+**Course Context:**
+- Module: Web Applications (wap/INF)
+- Semester: WiSe 2025/2026
+- Supervisor: Dr. Peter Hoffmann
+- Institution: FH Vorarlberg - University of Applied Sciences
+- Group: DEF
+
+
+
