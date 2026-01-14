@@ -66,9 +66,28 @@ p {
     width: 100%;
     display: flex;
     justify-content: center; /* Button exakt wie vorher */
-    align-items: center;
     gap: 15px;
-    margin-top: 30px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.welcome-circle {
+    width: 150px;
+    height: 150px;
+
+    /* HIER IST DIE FARBE: Ein dunkler Mix aus deinen App-Farben */
+    background: linear-gradient(135deg, #1a2a3a, #2c3e50);
+
+    border-radius: 50%; /* Macht es rund */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px auto; /* Zentriert den Kreis */
+
+    /* Animation & Schatten */
+    animation: float 3s ease-in-out infinite;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    overflow: hidden;
 }
 
 .side-mascot {
@@ -155,17 +174,30 @@ p {
 }
 
 .mascot {
-    width: 150px;
-    height: 150px;
-    background: #1a2a3a; /* Ein schönes Dunkelblau/Grau für den Kreis */
-    border-radius: 50%;  /* Macht es rund */
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    animation: float 3s ease-in-out infinite;
+}
+
+.welcome-mascot-circle {
+    width: 160px;
+    height: 160px;
+    background: #1a2a3a; /* Dunkler Kreis-Hintergrund */
+    border-radius: 50%;   /* Macht es rund */
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: float 3s ease-in-out infinite; /* Die Bewegung */
+    margin: 0 auto 20px auto; /* Zentriert den Kreis und gibt Abstand nach unten */
+    animation: float 3s ease-in-out infinite; /* Die Schweb-Animation */
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     overflow: hidden;
-    margin: 0 auto; /* Zentriert den Kreis selbst */
+}
+
+.welcome-img {
+    width: 90%; /* Bild ist etwas kleiner als der Kreis */
+    height: 90%;
+    object-fit: contain;
 }
 
 .mascot-placeholder {
@@ -281,7 +313,7 @@ p {
     bottom: 0;
     width: 100%;
     max-width: 430px;
-    height: 100dvh; /* dynamic viewport height - modern browsers */
+    height: 100vh;
     margin: 0 auto;
     overflow: hidden;
     background-color: black;
@@ -424,12 +456,6 @@ p {
 
 .result-container .mascot {
     animation: none;
-}
-
-.mascot img {
-    width: 100%; /* Bild ist etwas kleiner als der Kreis */
-    height: 100%;
-    object-fit: contain;
 }
 
 .result-mascot .mascot-small {
