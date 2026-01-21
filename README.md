@@ -1,4 +1,7 @@
 # LexiORA
+
+Access to application via lexiORA.at
+
 Starting the Server
 
 1. Navigate to your project directory:
