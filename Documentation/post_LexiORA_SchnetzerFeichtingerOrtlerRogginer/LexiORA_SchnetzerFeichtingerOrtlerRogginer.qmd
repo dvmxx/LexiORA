@@ -30,7 +30,7 @@ other-links:
     href: https://lexiora.at
     icon: play-circle
   - text: Project Report (PDF)
-    href: ./LexiORA_WebApplications_SchnetzerFeichtingerOrtlerRogginer.pdf
+    href: assets/LexiORA_WebApplications_SchnetzerFeichtingerOrtlerRogginer.pdf
     icon: file-pdf
 resources:
   - assets/lexi-curious.png
